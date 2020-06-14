@@ -17,14 +17,14 @@ public class DieTest {
     @Test
     public void shouldReturnIntegerLargerThanZero(){
         int subject = die.roll();
-        boolean largerThanZero = (0 < subject) ? true : false;
+        boolean largerThanZero = 0 < subject;
         assertTrue(largerThanZero);
     }
 
     @Test
     public void shouldReturnIntegerSmallerThanSeven(){
         int subject = die.roll();
-        boolean smallerThanSeven = (subject < 7) ? true : false;
+        boolean smallerThanSeven = subject < 7;
         assertTrue(smallerThanSeven);
     }
 

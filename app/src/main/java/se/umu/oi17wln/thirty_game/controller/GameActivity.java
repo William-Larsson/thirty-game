@@ -1,10 +1,12 @@
-package se.umu.oi17wln.thirty_game;
+package se.umu.oi17wln.thirty_game.controller;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+import se.umu.oi17wln.thirty_game.R;
+
+public class GameActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

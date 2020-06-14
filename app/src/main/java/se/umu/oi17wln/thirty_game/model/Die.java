@@ -20,6 +20,8 @@ public class Die {
         this.rand = new Random();
     }
 
+
+
     /**
      * Roll a new integer ranging from 1 to 6
      * @return = int: 1, 2, ..., 6
