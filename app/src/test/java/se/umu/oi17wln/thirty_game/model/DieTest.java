@@ -1,4 +1,4 @@
-package se.umu.oi17wln.thirty_game.modelTest;
+package se.umu.oi17wln.thirty_game.model;
 
 import org.junit.Before;
 import org.junit.Test;
