@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Thirty</string>
+
+    <!--GameActivity strings-->
+    <string name="help_text">Press a die to lock it.</string>
+    <string name="roll_dice_text">Roll dice</string>
+    <string name="end_turn_text">End turn</string>
 </resources>
