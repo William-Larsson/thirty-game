@@ -1,13 +1,13 @@
 package se.umu.oi17wln.thirty_game.controller;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import se.umu.oi17wln.thirty_game.R;
@@ -41,8 +41,7 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
         diceButtons = new ArrayList<>();
         setUpViewInstances();
-        setUpButtonListeners();
-        setUpDiceListeners();
+        setUpvViewListeners();
 
         // this will need changing to fix rotate resetting
         startNewGame();
@@ -68,19 +67,14 @@ public class GameActivity extends AppCompatActivity {
      * Set up listeners for the buttons used to
      * play the game
      */
-    private void setUpButtonListeners(){
+    private void setUpvViewListeners(){
         endTurnBtn.setOnClickListener((view) -> endGameRound());
         rollDiceBtn.setOnClickListener((view) -> makeNewDiceRoll());
+
+        for (ImageButton btn : diceButtons){
+            btn.setOnClickListener((view) -> toggleDiceVisualState(view));
+        }
     }
-
-
-    /**
-     * Set up listeners for the dice ImageButtons.
-     */
-    private void setUpDiceListeners(){
-        // set up listeners here.
-    }
-
 
     /**
      * Start a new game.
@@ -88,6 +82,14 @@ public class GameActivity extends AppCompatActivity {
     private void startNewGame(){
         this.gameLogic = new GameLogic();
         this.dice = new Dice();
+    }
+
+    /**
+     * Toggle
+     * @param view = instance of the button pressed
+     */
+    private void toggleDiceVisualState(View view) {
+        Toast.makeText(this, Integer.toString(diceButtons.indexOf(view)), Toast.LENGTH_SHORT).show();
     }
 
 
@@ -109,13 +111,14 @@ public class GameActivity extends AppCompatActivity {
      * ...
      */
     private void endGameRound() {
-        // increment current turn
-        // save player choice, score etc for this turn.
+        // save player choice, score, etc for this turn.
+        // increment current turn -> gameLogic.beginNewTurn();
         // check if game is end:
         //      calc total score and move on to ResultActivity
         // else:
         //      reset dice to be unlocked
         //      reset throw count.
+
 
         Toast.makeText(GameActivity.this, "End Turn pressed", Toast.LENGTH_SHORT).show();
     }

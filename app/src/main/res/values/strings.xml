@@ -5,4 +5,12 @@
     <string name="help_text">Press a die to lock it.</string>
     <string name="roll_dice_text">Roll dice</string>
     <string name="end_turn_text">End turn</string>
+
+    <!--Dice desc-->
+    <string name="die_1">Die 1</string>
+    <string name="die_2">Die 2</string>
+    <string name="die_3">Die 3</string>
+    <string name="die_4">Die 4</string>
+    <string name="die_5">Die 5</string>
+    <string name="die_6">Die 6</string>
 </resources>

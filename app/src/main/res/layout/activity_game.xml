@@ -43,7 +43,8 @@
         android:layout_marginTop="24dp"
         android:background="@mipmap/white5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/die_1" />
 
     <ImageButton
         android:id="@+id/diceButton1"
@@ -54,7 +55,8 @@
         app:layout_constraintEnd_toStartOf="@+id/diceButton2"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toEndOf="@+id/diceButton0"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/die_2" />
 
     <ImageButton
         android:id="@+id/diceButton2"
@@ -64,7 +66,8 @@
         android:layout_marginEnd="48dp"
         android:background="@mipmap/white5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/die_3" />
 
     <ImageButton
         android:id="@+id/diceButton3"
@@ -74,7 +77,8 @@
         android:layout_marginTop="24dp"
         android:background="@mipmap/white5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/diceButton0" />
+        app:layout_constraintTop_toBottomOf="@+id/diceButton0"
+        android:contentDescription="@string/die_4" />
 
     <ImageButton
         android:id="@+id/diceButton4"
@@ -85,7 +89,8 @@
         app:layout_constraintEnd_toStartOf="@+id/diceButton5"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toEndOf="@+id/diceButton3"
-        app:layout_constraintTop_toBottomOf="@+id/diceButton1" />
+        app:layout_constraintTop_toBottomOf="@+id/diceButton1"
+        android:contentDescription="@string/die_5" />
 
     <ImageButton
         android:id="@+id/diceButton5"
@@ -95,6 +100,7 @@
         android:layout_marginEnd="48dp"
         android:background="@mipmap/white5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/diceButton2" />
+        app:layout_constraintTop_toBottomOf="@+id/diceButton2"
+        android:contentDescription="@string/die_6" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
