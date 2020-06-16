@@ -11,6 +11,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import se.umu.oi17wln.thirty_game.R;
+import se.umu.oi17wln.thirty_game.model.Dice;
+import se.umu.oi17wln.thirty_game.model.GameLogic;
 
 /**
  * Controller class for the main game screen and its
@@ -24,6 +26,8 @@ public class GameActivity extends AppCompatActivity {
     private Button endTurnBtn;
     private Button rollDiceBtn;
     private ArrayList<ImageButton> diceButtons;
+    private GameLogic gameLogic;
+    private Dice dice;
 
     /**
      * Set up all the things needed when this activity
@@ -35,11 +39,15 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-
+        diceButtons = new ArrayList<>();
         setUpViewInstances();
         setUpButtonListeners();
         setUpDiceListeners();
+
+        // this will need changing to fix rotate resetting
+        startNewGame();
     }
+
 
     /**
      * Set up all view instances on the game screen.
@@ -61,12 +69,8 @@ public class GameActivity extends AppCompatActivity {
      * play the game
      */
     private void setUpButtonListeners(){
-        endTurnBtn.setOnClickListener((view) -> {
-            Toast.makeText(GameActivity.this, "End Turn pressed", Toast.LENGTH_SHORT).show();
-        });
-        rollDiceBtn.setOnClickListener((view) -> {
-            Toast.makeText(GameActivity.this, "Roll dice pressed", Toast.LENGTH_SHORT).show();
-        });
+        endTurnBtn.setOnClickListener((view) -> endGameRound());
+        rollDiceBtn.setOnClickListener((view) -> makeNewDiceRoll());
     }
 
 
@@ -75,5 +79,44 @@ public class GameActivity extends AppCompatActivity {
      */
     private void setUpDiceListeners(){
         // set up listeners here.
+    }
+
+
+    /**
+     * Start a new game.
+     */
+    private void startNewGame(){
+        this.gameLogic = new GameLogic();
+        this.dice = new Dice();
+    }
+
+
+    /**
+     * ...
+     */
+    private void makeNewDiceRoll() {
+        ArrayList<Integer> diceValues = dice.roll();
+        gameLogic.incrementThrow();
+        // update images for the dice Imagebuttons.
+        // if current turn == 3, make this button non-clickable
+
+        String output = "Roll: " + diceValues.toString();
+        Toast.makeText(GameActivity.this, output, Toast.LENGTH_LONG).show();
+    }
+
+
+    /**
+     * ...
+     */
+    private void endGameRound() {
+        // increment current turn
+        // save player choice, score etc for this turn.
+        // check if game is end:
+        //      calc total score and move on to ResultActivity
+        // else:
+        //      reset dice to be unlocked
+        //      reset throw count.
+
+        Toast.makeText(GameActivity.this, "End Turn pressed", Toast.LENGTH_SHORT).show();
     }
 }

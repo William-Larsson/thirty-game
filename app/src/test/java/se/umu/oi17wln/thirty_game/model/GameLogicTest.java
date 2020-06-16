@@ -106,4 +106,18 @@ public class GameLogicTest {
         calc.setAccessible(true);
         assertEquals(13, calc.invoke(logic, diceValues));
     }
+
+    @Test
+    public void shouldReturnGameIsEnd(){
+        for (int i = 0; i < 10; i++){
+            logic.beginNewTurn();
+        }
+        assertTrue(logic.gameIsEnd());
+    }
+
+    @Test
+    public void shouldReturnGameIsNotEnd(){
+        logic.beginNewTurn();
+        assertFalse(logic.gameIsEnd());
+    }
 }

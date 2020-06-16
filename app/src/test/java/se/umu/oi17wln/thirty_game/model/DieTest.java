@@ -32,4 +32,10 @@ public class DieTest {
     public void shouldGetSameIntegerFromRollAndGet(){
         assertEquals(die.roll(), die.getValue());
     }
+
+    @Test
+    public void shouldGetLockedOnToggle(){
+        die.toogleLockedState();
+        assertTrue(die.isLocked());
+    }
 }

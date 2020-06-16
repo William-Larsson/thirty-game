@@ -13,6 +13,7 @@ import java.util.Collections;
 public class GameLogic {
     private static final int MAX_TURNS = 10;
     private static final int MAX_THROWS = 3;
+
     private int currentTurn;
     private int currentThrow;
 
@@ -29,6 +30,7 @@ public class GameLogic {
         return this.currentTurn;
     }
 
+
     /**
      * Increment current turn and reset current throw
      * in order to "move" on to the next turn.
@@ -37,6 +39,32 @@ public class GameLogic {
         this.currentTurn++;
         this.currentThrow = 0;
     }
+
+
+    /**
+     * Check if the game is ended.
+     * @return = true is game is ended.
+     */
+    public boolean gameIsEnd(){
+        return this.currentTurn >= MAX_TURNS;
+    }
+
+
+    /**
+     * +1 to the throw count.
+     */
+    public void incrementThrow(){
+        this.currentThrow++;
+    }
+
+    /**
+     * Check if player can make another throw this turn
+     * @return = true if can throw.
+     */
+    public boolean canThrowAgain(){
+        return this.currentThrow >= MAX_THROWS;
+    }
+
 
     /**
      * Calculates the score achieved during a

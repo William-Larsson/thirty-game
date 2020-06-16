@@ -11,6 +11,7 @@ import java.util.Random;
  */
 public class Die {
     private Random rand;
+    private boolean isLocked;
     private int value;
 
     /**
@@ -18,8 +19,8 @@ public class Die {
      */
     public Die(){
         this.rand = new Random();
+        this.isLocked = false;
     }
-
 
 
     /**
@@ -31,11 +32,29 @@ public class Die {
         return this.value;
     }
 
+
     /**
      * Get the current value of the die.
      * @return = current die integer value.
      */
     public int getValue() {
         return this.value;
+    }
+
+
+    /**
+     * Get isLocked value.
+     * @return = false if unlocked, else true
+     */
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+
+    /**
+     * Toggle current state for locked.
+     */
+    public void toogleLockedState() {
+        isLocked = !isLocked;
     }
 }
