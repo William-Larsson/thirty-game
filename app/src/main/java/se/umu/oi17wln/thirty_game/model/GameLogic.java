@@ -1,6 +1,7 @@
 package se.umu.oi17wln.thirty_game.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 
 /**
@@ -87,7 +88,13 @@ public class GameLogic {
 
         if (scoreMode > ScoreMode.LOW){
             sortInDescendingOrder(tempDiceValues);
-            score = calcHighestScore(tempDiceValues, 0, scoreMode);
+            score = calcHighestScore(
+                    tempDiceValues,
+                    0,
+                    0,
+                    scoreMode,
+                    new ArrayList<Integer>()
+            );
         } else {
             score = calcSum(tempDiceValues);
         }
@@ -133,29 +140,50 @@ public class GameLogic {
      *                   ScoreMode target value.
      * @param sum = the current sum of a given subset.
      * @param scoreTarget = the target value chosen by the player.
+     * @param usedValueIndices =
      * @return = the total score.
      */
-    private int calcHighestScore(ArrayList<Integer> diceValues, int sum, int scoreTarget)
-            throws IllegalArgumentException
-    {
+    private int calcHighestScore(
+            ArrayList<Integer> diceValues,
+            int startIndex,
+            int sum,
+            int scoreTarget,
+            ArrayList<Integer> usedValueIndices
+    ) throws IllegalArgumentException {
         int returnSum = 0;
 
-        System.out.println(diceValues + " sum:" + sum + " ");
-
         if (sum == scoreTarget) {
-            return returnSum + sum;
+            // i< diceValue.size() requires items in reverse order or risk IndexOutOfBounds.
+            Collections.sort(usedValueIndices, Collections.reverseOrder());
+            for (Integer i : usedValueIndices) {
+                if (!diceValues.isEmpty() && i < diceValues.size()) {
+                    diceValues.remove(i.intValue());
+                }
+            }
+            usedValueIndices.clear();
+            return sum;
         }
 
-        for (int i = 0; i < diceValues.size(); i++) {
+        for (int i = startIndex; i < diceValues.size(); i++) {
             if (sum + diceValues.get(i) <= scoreTarget) {
                 sum += diceValues.get(i);
-                diceValues.remove(i);
-                returnSum += calcHighestScore(diceValues, sum, scoreTarget);
+                usedValueIndices.add(i);
+                returnSum += calcHighestScore(
+                        diceValues,
+                        i+1,
+                        sum,
+                        scoreTarget,
+                        usedValueIndices
+                );
                 i = -1; // restart loop (in order to start from beginning of diceValues again)
                 sum = 0;
             } else if (diceValues.get(i) > scoreTarget){
                 throw new IllegalArgumentException("Array contains values greater than target");
             }
+        }
+        if (returnSum == 0 && !diceValues.isEmpty()) {
+            diceValues.remove(0); // remove first item -> avoid eternal loop
+            usedValueIndices.clear(); // make sure first (or any) item is reset from "used"
         }
         return returnSum;
     }

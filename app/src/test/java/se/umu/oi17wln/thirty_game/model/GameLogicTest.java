@@ -43,9 +43,21 @@ public class GameLogicTest {
     }
 
     @Test
-    public void shouldTestYO(){
-        ArrayList<Integer> funny = new ArrayList<>(Arrays.asList(5,3,6,6,6,4));
-        assertEquals(24, logic.calcTurnScore(funny, ScoreMode.TWELVE));
+    public void shouldCalcCorrectlyOnStrictlyDecreasingNumbersLowerThanTarget(){
+        ArrayList<Integer> values = new ArrayList<>(Arrays.asList(6,5,4,3,2,1));
+        assertEquals(12, logic.calcTurnScore(values, ScoreMode.TWELVE));
+    }
+
+    @Test
+    public void shouldCalcCorrectlyOnBuggyEdgeCase1() {
+        ArrayList<Integer> values = new ArrayList<>(Arrays.asList(5,3,6,6,6,4));
+        assertEquals(24, logic.calcTurnScore(values, ScoreMode.TWELVE));
+    }
+
+    @Test
+    public void shouldCalcCorrectlyOnBuggyEdgeCase2() {
+        ArrayList<Integer> values = new ArrayList<>(Arrays.asList(4,3,4,4,4,6));
+        assertEquals(7, logic.calcTurnScore(values, ScoreMode.SEVEN));
     }
 
     @Test
@@ -92,14 +104,23 @@ public class GameLogicTest {
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
         // Declare method input parameter types
-        Class[] args = new Class[3];
+        Class[] args = new Class[5];
         args[0] = ArrayList.class;
         args[1] = int.class;
         args[2] = int.class;
+        args[3] = int.class;
+        args[4] = ArrayList.class;
 
         Method calc = GameLogic.class.getDeclaredMethod("calcHighestScore", args);
         calc.setAccessible(true); // make method "public"
-        int result = (int) calc.invoke(logic, diceValues, 0, ScoreMode.LOW);
+        int result = (int) calc.invoke(
+                logic,
+                diceValues,
+                0,
+                0,
+                ScoreMode.LOW,
+                new ArrayList<Integer>()
+        );
     }
 
     @Test

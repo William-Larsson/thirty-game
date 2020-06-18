@@ -234,7 +234,7 @@ public class GameActivity extends AppCompatActivity {
             int scoreMode = scoreModeStringToInt(scoreModeStr);
             int turnScore= getTurnScore(scoreMode);
 
-            Toast.makeText(this, "Score: " + turnScore , Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Score: " + turnScore , Toast.LENGTH_LONG).show();
 
             gameTurns.add(new GameTurn(scoreModeStr, turnScore, gameLogic.getCurrentTurn()));
             removeChosenScoreMode();
