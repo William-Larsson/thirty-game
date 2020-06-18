@@ -17,10 +17,14 @@ public class GameLogic {
     private int currentTurn;
     private int currentThrow;
 
+    /**
+     * Constructor, builds the game logic
+     */
     public GameLogic(){
-        this.currentTurn = 0;
+        this.currentTurn = 1;
         this.currentThrow = 0;
     }
+
 
     /**
      * Get the current game turn
@@ -57,12 +61,13 @@ public class GameLogic {
         this.currentThrow++;
     }
 
+
     /**
      * Check if player can make another throw this turn
      * @return = true if can throw.
      */
     public boolean canThrowAgain(){
-        return this.currentThrow >= MAX_THROWS;
+        return this.currentThrow < MAX_THROWS;
     }
 
 
@@ -84,7 +89,7 @@ public class GameLogic {
             sortInDescendingOrder(tempDiceValues);
             score = calcHighestScore(tempDiceValues, 0, scoreMode);
         } else {
-            score = calcSumOfValues(tempDiceValues);
+            score = calcSum(tempDiceValues);
         }
         return score;
     }
@@ -135,6 +140,8 @@ public class GameLogic {
     {
         int returnSum = 0;
 
+        System.out.println(diceValues + " sum:" + sum + " ");
+
         if (sum == scoreTarget) {
             return returnSum + sum;
         }
@@ -160,7 +167,7 @@ public class GameLogic {
      *
      * @return = the sum.
      */
-    private int calcSumOfValues(ArrayList<Integer> arr) {
+    public int calcSum(ArrayList<Integer> arr) {
         int sum = 0;
         for (Integer i : arr) sum += i;
         return sum;

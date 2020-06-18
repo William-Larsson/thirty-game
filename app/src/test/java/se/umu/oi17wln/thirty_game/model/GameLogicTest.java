@@ -1,7 +1,5 @@
 package se.umu.oi17wln.thirty_game.model;
 
-import android.text.GetChars;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -42,6 +40,12 @@ public class GameLogicTest {
     @Test
     public void shouldGetScoreFiveWhenScoreModeLOW(){
         assertEquals(5, logic.calcTurnScore(diceValues, ScoreMode.LOW));
+    }
+
+    @Test
+    public void shouldTestYO(){
+        ArrayList<Integer> funny = new ArrayList<>(Arrays.asList(5,3,6,6,6,4));
+        assertEquals(24, logic.calcTurnScore(funny, ScoreMode.TWELVE));
     }
 
     @Test
@@ -102,7 +106,7 @@ public class GameLogicTest {
     public void shouldSumNumbersFromArray()
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
-        Method calc = GameLogic.class.getDeclaredMethod("calcSumOfValues", ArrayList.class);
+        Method calc = GameLogic.class.getDeclaredMethod("calcSum", ArrayList.class);
         calc.setAccessible(true);
         assertEquals(13, calc.invoke(logic, diceValues));
     }

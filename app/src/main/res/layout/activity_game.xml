@@ -12,31 +12,39 @@
         android:id="@+id/dice_lock_help"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="28dp"
         android:text="@string/help_text"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/diceButton4" />
+        app:layout_constraintTop_toBottomOf="@+id/dice_button_4" />
 
     <Button
         android:id="@+id/roll_dice_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="130dp"
+        android:layout_height="55dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="24dp"
         android:text="@string/roll_dice_text"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/score_Spinner"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/end_turn_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="130dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginBottom="24dp"
         android:text="@string/end_turn_text"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/score_Spinner"
+        app:layout_constraintVertical_bias="1.0" />
 
     <ImageButton
-        android:id="@+id/diceButton0"
+        android:id="@+id/dice_button_0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
@@ -47,19 +55,19 @@
         android:contentDescription="@string/die_1" />
 
     <ImageButton
-        android:id="@+id/diceButton1"
+        android:id="@+id/dice_button_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:background="@mipmap/white5"
-        app:layout_constraintEnd_toStartOf="@+id/diceButton2"
+        app:layout_constraintEnd_toStartOf="@+id/dice_Button_2"
         app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toEndOf="@+id/diceButton0"
+        app:layout_constraintStart_toEndOf="@+id/dice_button_0"
         app:layout_constraintTop_toTopOf="parent"
         android:contentDescription="@string/die_2" />
 
     <ImageButton
-        android:id="@+id/diceButton2"
+        android:id="@+id/dice_Button_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -70,37 +78,58 @@
         android:contentDescription="@string/die_3" />
 
     <ImageButton
-        android:id="@+id/diceButton3"
+        android:id="@+id/dice_button_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
         android:layout_marginTop="24dp"
         android:background="@mipmap/white5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/diceButton0"
+        app:layout_constraintTop_toBottomOf="@+id/dice_button_0"
         android:contentDescription="@string/die_4" />
 
     <ImageButton
-        android:id="@+id/diceButton4"
+        android:id="@+id/dice_button_4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:background="@mipmap/white5"
-        app:layout_constraintEnd_toStartOf="@+id/diceButton5"
+        app:layout_constraintEnd_toStartOf="@+id/dice_button_5"
         app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toEndOf="@+id/diceButton3"
-        app:layout_constraintTop_toBottomOf="@+id/diceButton1"
+        app:layout_constraintStart_toEndOf="@+id/dice_button_3"
+        app:layout_constraintTop_toBottomOf="@+id/dice_button_1"
         android:contentDescription="@string/die_5" />
 
     <ImageButton
-        android:id="@+id/diceButton5"
+        android:id="@+id/dice_button_5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="48dp"
         android:background="@mipmap/white5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/diceButton2"
+        app:layout_constraintTop_toBottomOf="@+id/dice_Button_2"
         android:contentDescription="@string/die_6" />
+
+    <Spinner
+        android:id="@+id/score_Spinner"
+        android:layout_width="130dp"
+        android:layout_height="43dp"
+        android:layout_marginBottom="176dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/score_mode_help"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="@string/score_help"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/score_Spinner" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

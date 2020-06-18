@@ -52,6 +52,26 @@ public class Dice {
 
 
     /**
+     * Return die locked state for die on given index.
+     * @param index = which die in list to scrutinize
+     * @return = true if locked, else false.
+     */
+    public boolean dieIsLocked(int index){
+        return dice.get(index).isLocked();
+    }
+
+
+    /**
+     * Get value of die on given index
+     * @param index = which die to scrutinize
+     * @return = the die value.
+     */
+    public int getDieValue(int index){
+        return dice.get(index).getValue();
+    }
+
+
+    /**
      * Returns ArrayList "dice".
      * Used for testing by using Java reflections.
      * @return = the list of Die objects.
