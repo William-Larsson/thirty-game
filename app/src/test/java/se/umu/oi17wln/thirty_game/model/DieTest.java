@@ -38,4 +38,10 @@ public class DieTest {
         die.toogleLockedState();
         assertTrue(die.isLocked());
     }
+
+    @Test
+    public void shouldNotChangeValueOnRollIfLocked(){
+        die.toogleLockedState();
+        assertEquals(0, die.roll());
+    }
 }

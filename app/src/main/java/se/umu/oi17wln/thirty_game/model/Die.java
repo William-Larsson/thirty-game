@@ -28,7 +28,9 @@ public class Die {
      * @return = int: 1, 2, ..., 6
      */
     public int roll() {
-        this.value = this.rand.nextInt(6)+1;
+        if (!isLocked) {
+            this.value = this.rand.nextInt(6)+1;
+        }
         return this.value;
     }
 
