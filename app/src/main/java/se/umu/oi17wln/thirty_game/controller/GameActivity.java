@@ -1,7 +1,9 @@
 package se.umu.oi17wln.thirty_game.controller;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -26,6 +28,11 @@ import se.umu.oi17wln.thirty_game.model.ScoreMode;
  * Course: Development of mobile applications, 5DV209
  */
 public class GameActivity extends AppCompatActivity {
+    private static final String SAVE_DICE = "se.umu.oi17wln.save_dice";
+    private static final String SAVE_SCORE_MODES = "se.umu.oi17wln.save_score_modes";
+    private static final String SAVE_LOGIC = "se.umu.oi17wln.save_logic";
+    private static final String SAVE_TURNS = "se.umu.oi17wln.save_turns";
+    private static final String SAVE_HAS_ROLLED = "se.umu.oi17wln.save_has_rolled";
     private static final int NUMBER_OF_DICE = 6;
     // Views
     private Button endTurnBtn;
@@ -41,6 +48,7 @@ public class GameActivity extends AppCompatActivity {
     private GameLogic gameLogic;
     private boolean hasRolledDice;
 
+
     /**
      * Set up all the things needed when this activity
      * is created, e.g Views, listeners etc.
@@ -53,15 +61,46 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
 
         diceButtons = new ArrayList<>();
-        gameTurns = new ArrayList<>();
-
         setUpViewInstances();
         setUpViewListeners();
-        setUpScoreModeSpinner();
 
-        // TODO: will this need changing to fix rotate resetting?
-        initNewGame();
-        endTurnBtn.setEnabled(false);
+        if (savedInstanceState != null) {
+            dice = savedInstanceState.getParcelableArrayList(SAVE_DICE);
+            gameTurns = savedInstanceState.getParcelableArrayList(SAVE_TURNS);
+            gameLogic = savedInstanceState.getParcelable(SAVE_LOGIC);
+            availableScoreModes = savedInstanceState.getStringArrayList(SAVE_SCORE_MODES);
+            hasRolledDice = savedInstanceState.getByte(SAVE_HAS_ROLLED) != 0;
+            setNewSpinnerAdapter();
+
+            for (int i = 0; i < NUMBER_OF_DICE;  i++){
+                setBackgroundForButton(diceButtons.get(i), i, dice.get(i).getValue());
+            }
+
+        } else {
+            gameTurns = new ArrayList<>();
+            setUpScoreModeSpinner();
+            initNewGame();
+        }
+
+        if (!hasRolledDice) {
+            endTurnBtn.setEnabled(false);
+        }
+    }
+
+
+    /**
+     * Save the current state, for example in case of
+     * screen rotation.
+     * @param outState = the bundle to state save to.
+     */
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(SAVE_DICE, dice);
+        outState.putParcelableArrayList(SAVE_TURNS, gameTurns);
+        outState.putStringArrayList(SAVE_SCORE_MODES, availableScoreModes);
+        outState.putParcelable(SAVE_LOGIC, gameLogic);
+        outState.putByte(SAVE_HAS_ROLLED, (byte) (hasRolledDice ? 1 : 0));
     }
 
 

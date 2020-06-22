@@ -1,7 +1,9 @@
 package se.umu.oi17wln.thirty_game.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 /**
@@ -11,7 +13,7 @@ import java.util.Collections;
  * CS-ID: oi17wln
  * Course: Development of mobile applications, 5DV209
  */
-public class GameLogic {
+public class GameLogic implements Parcelable {
     private static final int MAX_TURNS = 10;
     private static final int MAX_THROWS = 3;
 
@@ -25,6 +27,33 @@ public class GameLogic {
         this.currentTurn = 1;
         this.currentThrow = 0;
     }
+
+
+    /**
+     * Alt. constructor for restoring state
+     * from a given parcel.
+     * @param in = parcel with previous state.
+     */
+    protected GameLogic(Parcel in) {
+        currentTurn = in.readInt();
+        currentThrow = in.readInt();
+    }
+
+
+    /**
+     * Generates instances of GameLogoc class from a Parcel.
+     */
+    public static final Creator<GameLogic> CREATOR = new Creator<GameLogic>() {
+        @Override
+        public GameLogic createFromParcel(Parcel in) {
+            return new GameLogic(in);
+        }
+
+        @Override
+        public GameLogic[] newArray(int size) {
+            return new GameLogic[size];
+        }
+    };
 
 
     /**
@@ -153,7 +182,7 @@ public class GameLogic {
         int returnSum = 0;
 
         if (sum == scoreTarget) {
-            // i< diceValue.size() requires items in reverse order or risk IndexOutOfBounds.
+            // i < diceValue.size() requires items in reverse order or risk IndexOutOfBounds.
             Collections.sort(usedValueIndices, Collections.reverseOrder());
             for (Integer i : usedValueIndices) {
                 if (!diceValues.isEmpty() && i < diceValues.size()) {
@@ -199,5 +228,27 @@ public class GameLogic {
         int sum = 0;
         for (Integer i : arr) sum += i;
         return sum;
+    }
+
+
+    /**
+     * Describe contents for Parcelable interface
+     * @return = method not used.
+     */
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+
+    /**
+     * Save state of the object instance.
+     * @param dest = the parcel to save to.
+     * @param flags = not used.
+     */
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(currentTurn);
+        dest.writeInt(currentThrow);
     }
 }

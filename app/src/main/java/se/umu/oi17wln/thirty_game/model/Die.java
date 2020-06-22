@@ -1,5 +1,8 @@
 package se.umu.oi17wln.thirty_game.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Random;
 
 /**
@@ -9,7 +12,7 @@ import java.util.Random;
  * CS-ID: oi17wln
  * Course: Development of mobile applications, 5DV209
  */
-public class Die {
+public class Die implements Parcelable {
     private Random rand;
     private boolean isLocked;
     private int value;
@@ -21,6 +24,33 @@ public class Die {
         this.rand = new Random();
         this.isLocked = false;
     }
+
+
+    /**
+     * Alt. constructor for restoring state
+     * from a given parcel.
+     * @param in = parcel with previous state.
+     */
+    protected Die(Parcel in) {
+        isLocked = in.readByte() != 0;
+        value = in.readInt();
+    }
+
+
+    /**
+     * Generates instances of Die class from a Parcel.
+     */
+    public static final Creator<Die> CREATOR = new Creator<Die>() {
+        @Override
+        public Die createFromParcel(Parcel in) {
+            return new Die(in);
+        }
+
+        @Override
+        public Die[] newArray(int size) {
+            return new Die[size];
+        }
+    };
 
 
     /**
@@ -58,5 +88,27 @@ public class Die {
      */
     public void toogleLockedState() {
         isLocked = !isLocked;
+    }
+
+
+    /**
+     * Describe contents for Parcelable interface
+     * @return = method not used.
+     */
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+
+    /**
+     * Save state of the object instance.
+     * @param dest = the parcel to save to.
+     * @param flags = not used.
+     */
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeByte((byte) (isLocked ? 1 : 0));
+        dest.writeInt(value);
     }
 }
