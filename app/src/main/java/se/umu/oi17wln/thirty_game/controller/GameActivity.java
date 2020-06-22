@@ -2,6 +2,8 @@ package se.umu.oi17wln.thirty_game.controller;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.view.View;
@@ -28,6 +30,7 @@ import se.umu.oi17wln.thirty_game.model.ScoreMode;
  * Course: Development of mobile applications, 5DV209
  */
 public class GameActivity extends AppCompatActivity {
+    // Global variables
     private static final String SAVE_DICE = "se.umu.oi17wln.save_dice";
     private static final String SAVE_SCORE_MODES = "se.umu.oi17wln.save_score_modes";
     private static final String SAVE_LOGIC = "se.umu.oi17wln.save_logic";
@@ -75,7 +78,6 @@ public class GameActivity extends AppCompatActivity {
             for (int i = 0; i < NUMBER_OF_DICE;  i++){
                 setBackgroundForButton(diceButtons.get(i), i, dice.get(i).getValue());
             }
-
         } else {
             gameTurns = new ArrayList<>();
             setUpScoreModeSpinner();
@@ -183,6 +185,33 @@ public class GameActivity extends AppCompatActivity {
 
 
     /**
+     * Rolls the dice, increments current throw,
+     * updates die button background and disables
+     * the roll button if all throws are used.
+     */
+    private void makeNewDiceRoll() {
+        ArrayList<Integer> diceValues = new ArrayList<>();
+        for (int i = 0; i < NUMBER_OF_DICE; i++) {
+            diceValues.add(dice.get(i).roll());
+        }
+
+        gameLogic.incrementThrow();
+        this.hasRolledDice = true;
+        this.endTurnBtn.setEnabled(true);
+
+        for (ImageButton btn : diceButtons) {
+            int dieIndex = diceButtons.indexOf(btn);
+            int dieValue = dice.get(dieIndex).getValue();
+            setBackgroundForButton(btn, dieIndex, dieValue);
+        }
+
+        if (!gameLogic.canThrowAgain()){
+            rollDiceBtn.setEnabled(false);
+        }
+    }
+
+
+    /**
      * Toggle locked/unlocked state for dice buttons
      * @param view = instance of the button pressed
      */
@@ -192,6 +221,19 @@ public class GameActivity extends AppCompatActivity {
 
         dice.get(dieIndex).toogleLockedState();
         setBackgroundForButton(view, dieIndex, dieValue);
+    }
+
+
+    /**
+     * Set background (dice image) for each unlocked die.
+     * @param btn = the button to change background on
+     * @param index = button index in array
+     * @param value = the value of the button.
+     */
+    private void setBackgroundForButton(View btn, int index, int value){
+        if (dice.get(index).isLocked()){
+            btn.setBackgroundResource(this.getLockedDieBackgroundRes(value));
+        } else btn.setBackgroundResource(this.getUnLockedDieBackgroundRes(value));
     }
 
 
@@ -230,47 +272,10 @@ public class GameActivity extends AppCompatActivity {
 
 
     /**
-     * Rolls the dice, increments current throw,
-     * updates die button background and disables
-     * the roll button if all throws are used.
-     */
-    private void makeNewDiceRoll() {
-        ArrayList<Integer> diceValues = new ArrayList<>();
-        for (int i = 0; i < NUMBER_OF_DICE; i++) {
-            diceValues.add(dice.get(i).roll());
-        }
-
-        gameLogic.incrementThrow();
-        this.hasRolledDice = true;
-        this.endTurnBtn.setEnabled(true);
-
-        for (ImageButton btn : diceButtons) {
-            int dieIndex = diceButtons.indexOf(btn);
-            int dieValue = dice.get(dieIndex).getValue();
-            setBackgroundForButton(btn, dieIndex, dieValue);
-        }
-
-        if (!gameLogic.canThrowAgain()){
-            rollDiceBtn.setEnabled(false);
-        }
-    }
-
-
-    /**
-     * Set background (dice image) for each unlocked die.
-     * @param btn = the button to change background on
-     * @param index = button index in array
-     * @param value = the value of the button.
-     */
-    private void setBackgroundForButton(View btn, int index, int value){
-        if (dice.get(index).isLocked()){
-            btn.setBackgroundResource(this.getLockedDieBackgroundRes(value));
-        } else btn.setBackgroundResource(this.getUnLockedDieBackgroundRes(value));
-    }
-
-
-    /**
-     * ...
+     * If used pressed End Turn, save the values of the
+     * turn to a GameTurn object.
+     * If not end of game, reset turn state
+     * else call ResultActivity screen with the gameTurns data.
      */
     private void endOfGameTurn() {
         if (scoreModeSpinner.getSelectedItem() != null) {
@@ -278,27 +283,13 @@ public class GameActivity extends AppCompatActivity {
             int scoreMode = scoreModeStringToInt(scoreModeStr);
             int turnScore= getTurnScore(scoreMode);
 
-            Toast.makeText(this, "Score: " + turnScore , Toast.LENGTH_LONG).show();
-
             gameTurns.add(new GameTurn(scoreModeStr, turnScore, gameLogic.getCurrentTurn()));
             removeChosenScoreMode();
             resetDiceLockedState();
 
             if (gameLogic.gameIsEnd()) {
-                // game is over
-                // Todo: calc total score, open results activity
-
-
-                ArrayList<Integer> scores = new ArrayList<>();
-                for (GameTurn turn : gameTurns){
-                    scores.add(turn.getTurnScore());
-                }
-                int totalScore = gameLogic.calcSum(scores);
-
-
-                Toast.makeText(this, "Game Over, Total Score: " + totalScore, Toast.LENGTH_SHORT).show();
-
-
+                // start ResultActivity with an intent
+                startActivity(ResultActivity.createIntent(this, gameTurns));
                 endTurnBtn.setEnabled(false);
                 rollDiceBtn.setEnabled(false);
             } else {
@@ -343,7 +334,7 @@ public class GameActivity extends AppCompatActivity {
     private int getTurnScore(int scoreMode) throws IllegalStateException {
         ArrayList<Integer> finalDiceValues = new ArrayList<>();
 
-        for (int i = 0; i < diceButtons.size(); i++){
+        for (int i = 0; i < NUMBER_OF_DICE; i++){
             if (dice.get(i).getValue() == 0) throw new IllegalStateException("Die value is zero");
             else finalDiceValues.add(dice.get(i).getValue());
         }

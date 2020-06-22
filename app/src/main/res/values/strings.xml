@@ -14,4 +14,9 @@
     <string name="die_4">Die 4</string>
     <string name="die_5">Die 5</string>
     <string name="die_6">Die 6</string>
+
+    <!--ResultActivity Strings-->
+    <string name="game_over">Game Over</string>
+    <string name="final_score">Final Score</string>
+    <string name="turn_temp_string">--</string>
 </resources>
