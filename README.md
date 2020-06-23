@@ -14,7 +14,7 @@ Thirty is a dice game not quite unlike Yatzy where you roll six dice in turns. A
 ## App Screenshots
 Game screen                |  Results screen
 :-------------------------:|:-------------------------:
-<img src="Screenshot_20200623-201219.jpg" alt="Screenshot of the game screen]" width="40%">  |  <img src="Screenshot_20200623-201523.jpg" alt="Screenshot of the result screen" width="40%">
+<img src="Screenshot_20200623-201219.jpg" alt="Screenshot of the game screen]" width="60%">  |  <img src="Screenshot_20200623-201523.jpg" alt="Screenshot of the result screen" width="60%">
 
 
 
