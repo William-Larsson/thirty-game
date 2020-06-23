@@ -57,14 +57,28 @@ public class GameTurn implements Parcelable {
     };
 
 
+    /**
+     * Get Score Mode used for this turn
+     * @return = the mode as a string
+     */
     public String getScoreMode() {
         return scoreMode;
     }
 
+
+    /**
+     * Get the score for this turn
+     * @return = the score
+     */
     public int getTurnScore() {
         return turnScore;
     }
 
+
+    /**
+     * Get which turn this was
+     * @return = the turn nr
+     */
     public int getTurnNr() {
         return turnNr;
     }

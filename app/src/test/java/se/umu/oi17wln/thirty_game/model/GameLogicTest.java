@@ -137,12 +137,12 @@ public class GameLogicTest {
         for (int i = 0; i < 10; i++){
             logic.beginNewTurn();
         }
-        assertTrue(logic.gameIsEnd());
+        assertTrue(logic.gameIsOnFinalTurn());
     }
 
     @Test
     public void shouldReturnGameIsNotEnd(){
         logic.beginNewTurn();
-        assertFalse(logic.gameIsEnd());
+        assertFalse(logic.gameIsOnFinalTurn());
     }
 }

@@ -3,9 +3,9 @@ package se.umu.oi17wln.thirty_game.controller;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -40,8 +40,8 @@ public class GameActivity extends AppCompatActivity {
     // Views
     private Button endTurnBtn;
     private Button rollDiceBtn;
-    private TextView diceHelpText;
-    private TextView scoreHelpText;
+    private TextView turnCounter;
+    private TextView throwCounter;
     private Spinner scoreModeSpinner;
     // State
     private ArrayList<ImageButton> diceButtons;
@@ -53,8 +53,9 @@ public class GameActivity extends AppCompatActivity {
 
 
     /**
-     * Set up all the things needed when this activity
+     * Set up all the things needed in state when this activity
      * is created, e.g Views, listeners etc.
+     * If previous state exists, use old values instead of new
      *
      * @param savedInstanceState = previously saved state
      */
@@ -84,9 +85,8 @@ public class GameActivity extends AppCompatActivity {
             initNewGame();
         }
 
-        if (!hasRolledDice) {
-            endTurnBtn.setEnabled(false);
-        }
+        setInitButtonState();
+        setTurnThrowCounters();
     }
 
 
@@ -107,6 +107,16 @@ public class GameActivity extends AppCompatActivity {
 
 
     /**
+     * Creates intent used for starting a new game.
+     * @param packageContext = package context
+     * @return = the intent.
+     */
+    public static Intent startNewGameIntent(Context packageContext){
+        return new Intent(packageContext, GameActivity.class);
+    }
+
+
+    /**
      * Set up all view instances on the game screen.
      */
     private void setUpViewInstances(){
@@ -115,8 +125,8 @@ public class GameActivity extends AppCompatActivity {
         rollDiceBtn = findViewById(R.id.roll_dice_btn);
         scoreModeSpinner = findViewById(R.id.score_Spinner);
         // Text
-        diceHelpText = findViewById(R.id.dice_lock_help);
-        scoreHelpText = findViewById(R.id.score_mode_help);
+        turnCounter = findViewById(R.id.turn_counter);
+        throwCounter = findViewById(R.id.throw_counter);
         // Dice buttons
         diceButtons.add(findViewById(R.id.dice_button_0));
         diceButtons.add(findViewById(R.id.dice_button_1));
@@ -164,13 +174,31 @@ public class GameActivity extends AppCompatActivity {
      * Sets a new adapter for the Score Mode spinner.
      */
     private void setNewSpinnerAdapter(){
-        ArrayAdapter<String> spinnerAdapter = new ScoreModeArrayAdapter<String>(
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(
                 this,
                 android.R.layout.simple_spinner_item,
                 this.availableScoreModes
         );
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         this.scoreModeSpinner.setAdapter(spinnerAdapter);
+    }
+
+
+    /**
+     * Sets the active button state based on the current
+     * status of the game.
+     */
+    private void setInitButtonState(){
+        if (!gameLogic.getGameIsEnded()) {
+            if (!hasRolledDice) {
+                endTurnBtn.setEnabled(false);
+            } else if (!gameLogic.canThrowAgain()) {
+                rollDiceBtn.setEnabled(false);
+            }
+        } else {
+            endTurnBtn.setEnabled(false);
+            rollDiceBtn.setEnabled(false);
+        }
     }
 
 
@@ -208,6 +236,8 @@ public class GameActivity extends AppCompatActivity {
         if (!gameLogic.canThrowAgain()){
             rollDiceBtn.setEnabled(false);
         }
+
+        setTurnThrowCounters();
     }
 
 
@@ -225,7 +255,7 @@ public class GameActivity extends AppCompatActivity {
 
 
     /**
-     * Set background (dice image) for each unlocked die.
+     * Set background (dice image) for each die.
      * @param btn = the button to change background on
      * @param index = button index in array
      * @param value = the value of the button.
@@ -234,6 +264,15 @@ public class GameActivity extends AppCompatActivity {
         if (dice.get(index).isLocked()){
             btn.setBackgroundResource(this.getLockedDieBackgroundRes(value));
         } else btn.setBackgroundResource(this.getUnLockedDieBackgroundRes(value));
+    }
+
+
+    /**
+     * Set UI indicators for current turn and throw count.
+     */
+    private void setTurnThrowCounters(){
+        turnCounter.setText("Turn: " + gameLogic.getCurrentTurn());
+        throwCounter.setText("Throw: " + gameLogic.getCurrentThrow());
     }
 
 
@@ -272,7 +311,7 @@ public class GameActivity extends AppCompatActivity {
 
 
     /**
-     * If used pressed End Turn, save the values of the
+     * If user pressed End Turn, save the values of the
      * turn to a GameTurn object.
      * If not end of game, reset turn state
      * else call ResultActivity screen with the gameTurns data.
@@ -281,15 +320,16 @@ public class GameActivity extends AppCompatActivity {
         if (scoreModeSpinner.getSelectedItem() != null) {
             String scoreModeStr = scoreModeSpinner.getSelectedItem().toString();
             int scoreMode = scoreModeStringToInt(scoreModeStr);
-            int turnScore= getTurnScore(scoreMode);
+            int turnScore = getTurnScore(scoreMode);
 
             gameTurns.add(new GameTurn(scoreModeStr, turnScore, gameLogic.getCurrentTurn()));
             removeChosenScoreMode();
             resetDiceLockedState();
 
-            if (gameLogic.gameIsEnd()) {
+            if (gameLogic.gameIsOnFinalTurn()) {
                 // start ResultActivity with an intent
                 startActivity(ResultActivity.createIntent(this, gameTurns));
+                gameLogic.setGameIsEnded(true);
                 endTurnBtn.setEnabled(false);
                 rollDiceBtn.setEnabled(false);
             } else {
@@ -297,6 +337,7 @@ public class GameActivity extends AppCompatActivity {
                 rollDiceBtn.setEnabled(true);
                 gameLogic.beginNewTurn();
                 hasRolledDice = false;
+                setTurnThrowCounters();
             }
         } else throw new IllegalStateException("Score mode spinner has no selected value");
     }

@@ -2,12 +2,13 @@ package se.umu.oi17wln.thirty_game.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * ...
+ * A class which holds all the data about the current game.
+ * Also contains functionality to calculate all necessary
+ * aspects of the games logic.
  *
  * Author: William Larsson
  * CS-ID: oi17wln
@@ -16,9 +17,10 @@ import java.util.Collections;
 public class GameLogic implements Parcelable {
     private static final int MAX_TURNS = 10;
     private static final int MAX_THROWS = 3;
-
+    // State
     private int currentTurn;
     private int currentThrow;
+    private boolean gameIsEnded;
 
     /**
      * Constructor, builds the game logic
@@ -26,6 +28,7 @@ public class GameLogic implements Parcelable {
     public GameLogic(){
         this.currentTurn = 1;
         this.currentThrow = 0;
+        this.gameIsEnded = false;
     }
 
 
@@ -35,8 +38,9 @@ public class GameLogic implements Parcelable {
      * @param in = parcel with previous state.
      */
     protected GameLogic(Parcel in) {
-        currentTurn = in.readInt();
-        currentThrow = in.readInt();
+        this.currentTurn = in.readInt();
+        this.currentThrow = in.readInt();
+        this.gameIsEnded = in.readByte() != 0;
     }
 
 
@@ -66,6 +70,15 @@ public class GameLogic implements Parcelable {
 
 
     /**
+     * Get the current throw for the turn
+     * @return = the current throw.
+     */
+    public int getCurrentThrow() {
+        return this.currentThrow;
+    }
+
+
+    /**
      * Increment current turn and reset current throw
      * in order to "move" on to the next turn.
      */
@@ -76,11 +89,29 @@ public class GameLogic implements Parcelable {
 
 
     /**
-     * Check if the game is ended.
+     * Check if the game is on its final turn.
      * @return = true is game is ended.
      */
-    public boolean gameIsEnd(){
+    public boolean gameIsOnFinalTurn(){
         return this.currentTurn >= MAX_TURNS;
+    }
+
+
+    /**
+     * Set game is end status
+     * @param ended = if game should be ended
+     */
+    public void setGameIsEnded(boolean ended){
+        this.gameIsEnded = ended;
+    }
+
+
+    /**
+     * Get game is ended status
+     * @return = true if ended.
+     */
+    public boolean getGameIsEnded(){
+        return this.gameIsEnded;
     }
 
 
@@ -250,5 +281,6 @@ public class GameLogic implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(currentTurn);
         dest.writeInt(currentThrow);
+        dest.writeByte((byte) (gameIsEnded ? 1 : 0));
     }
 }
