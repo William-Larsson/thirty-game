@@ -12,8 +12,9 @@ This was created as the first assignment on the course *Development of mobile ap
 Thirty is a dice game not quite unlike Yatzy where you roll six dice in turns. After the initial roll the player can decide to re-roll the dice up to two times. After each roll, the player can choose which dice they want to keep, and which ones to re-roll. After a maximum of two re-rolls per turn, the score is calculated for the dice. A game then consists of 10 turns just like this. The player will therefore make at most of 30 dice rolls in total, hence the name of the game.
 
 ## App Screenshots
-<img src="Screenshot_20200623-201219.jpg" alt="Screenshot of the game screen]" width="40%">
-<img src="Screenshot_20200623-201523.jpg" alt="Screenshot of the result screen" width="40%">
+Game screen                |  Results screen
+:-------------------------:|:-------------------------:
+<img src="Screenshot_20200623-201219.jpg" alt="Screenshot of the game screen]" width="40%">  |  <img src="Screenshot_20200623-201523.jpg" alt="Screenshot of the result screen" width="40%">
 
 
 
